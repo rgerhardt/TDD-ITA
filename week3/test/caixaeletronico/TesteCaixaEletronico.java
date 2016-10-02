@@ -27,18 +27,18 @@ public class TesteCaixaEletronico {
 	}
 	
 	private void logarNoCaixa() {
-		caixa.logar(conta.getNumero(), conta.getSenha());
+		caixa.logar(conta.getSenha());
 	}
 
 	
 	@Test
 	public void logarComUsuarioValido() {
-		assertEquals(caixa.logar(conta.getNumero(), conta.getSenha()), "Usuário Autenticado");
+		assertEquals(caixa.logar(conta.getSenha()), "Usuário Autenticado");
 	}
 	
 	@Test
-	public void tentarLogarComUsuarioInValido() {
-		assertEquals(caixa.logar("11", "121"), "Não foi possível autenticar o usuário");
+	public void tentarLogarComSenhaInValida() {
+		assertEquals(caixa.logar("121"), "Não foi possível autenticar o usuário");
 	}
 	
 	@Test(expected=CaixaEletronicoException.class)
@@ -103,22 +103,18 @@ public class TesteCaixaEletronico {
 		servicoRemoto.verificaSaldoConta(conta.getNumero(), 0.0);
 	}
 	
-	@Test
-	public void logarComCartao() {
-		assertEquals(caixa.logarComCartao(conta.getSenha()), "Usuário Autenticado");
-	}
 	
 	@Test(expected=HardwareException.class)
 	public void tentarLogarComCartaoQuandoHardwareEstaDefeituoso() {
 		caixa = new CaixaEletronico(servicoRemoto, new MockHardwareDefeituso());
-		caixa.logarComCartao(conta.getSenha());
+		caixa.logar(conta.getSenha());
 	}
 	
 
 	@Test(expected=HardwareException.class)
 	public void tentarDepositarQuandoHardwareEstaDefeituoso() {
 		caixa = new CaixaEletronico(servicoRemoto, new MockHardwareDefeituso());
-		caixa.logar(conta.getNumero(), conta.getSenha());
+		caixa.logar(conta.getSenha());
 		caixa.depositar(10.0);
 	}
 	
@@ -132,7 +128,7 @@ public class TesteCaixaEletronico {
 	@Test(expected=HardwareException.class)
 	public void tentarEntregarDinheiroQuandoHardwareEstaDefeituoso() {
 		caixa = new CaixaEletronico(servicoRemoto, new MockHardwareDefeituso());
-		caixa.logarComCartao(conta.getSenha());
+		caixa.logar(conta.getSenha());
 	}
 	
 	

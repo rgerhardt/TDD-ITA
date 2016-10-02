@@ -16,12 +16,9 @@ public class CaixaEletronico {
 			throw new CaixaEletronicoException("Você deve fazer o login antes de fazer uma operação");
 	}
 	
-	public String logarComCartao(String senha) {
-		String numero = hardware.pegarNumeroDaContaCartao();
-		return logar(numero, senha);
-	}
 	
-	public String logar(String numero, String senha) {
+	public String logar(String senha) {
+		String numero = hardware.pegarNumeroDaContaCartao();
 		ContaCorrente conta = servicoRemoto.recuperarConta(numero);
 		if(conta != null && conta.getSenha().equals(senha)) {
 			this.conta = conta;
